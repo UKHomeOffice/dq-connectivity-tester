@@ -6,11 +6,11 @@ pipeline:
 #      - go get github.com/stretchr/testify
 #      - go test -v
 
-  build:
-    image: golang:1.9
-    commands:
+#  build:
+#    image: golang:1.9
+#    commands:
 #      - GOOS=windows GOARCH=amd64 go build -a -ldflags '-extldflags "-static"' -o connectivity-tester-windows-amd64.exe;
-      - GOOS=linux   GOARCH=amd64 go build -a -ldflags '-extldflags "-static"' -o connectivity-tester-linux-amd64;
+#      - GOOS=linux   GOARCH=amd64 go build -a -ldflags '-extldflags "-static"' -o connectivity-tester-linux-amd64;
 #      - GOOS=darwin  GOARCH=amd64 go build -a -ldflags '-extldflags "-static"' -o connectivity-tester-darwin-amd64;
 
 #  github_release:
