@@ -58,21 +58,18 @@ pipeline:
 
   linux-packer-validate:
     image: chrisns/packer-ansible
-    environment:
     commands:
       - export HOME=/home/packer
       - packer validate packer.json
 
   linux-packer-inspect:
     image: chrisns/packer-ansible
-    environment:
     commands:
       - export HOME=/home/packer
       - packer inspect packer.json
 
   linux-packer-build:
     image: chrisns/packer-ansible
-    environment:
     commands:
       - export HOME=/home/packer
       - packer build packer.json
@@ -80,10 +77,10 @@ pipeline:
       event: push
 #      branch: master
 
-services:
-  dind:
-    image: docker:1.12-dind
-    privileged: true
-    command:
-      - "-s"
-      - "overlay"
+#services:
+#  dind:
+#    image: docker:1.12-dind
+#    privileged: true
+#    command:
+#      - "-s"
+#      - "overlay"

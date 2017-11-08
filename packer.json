@@ -22,7 +22,7 @@
       },
       "instance_type": "t2.micro",
       "ssh_username": "ubuntu",
-      "ami_name": "dq-packer-demo {{env `AWS_ACCESS_KEY_ID`}}"
+      "ami_name": "connectivity-tester {{timestamp}}"
     }
   ],
   "provisioners": [
