@@ -1,0 +1,31 @@
+---
+
+- name: Pre-reqs for ansible to run
+  hosts: all
+  gather_facts: false
+  become: yes
+  pre_tasks:
+    - raw: test -e /usr/bin/python || ( apt -y update && apt install -y python-minimal)
+
+- name: Build
+  hosts: all
+  become: yes
+  tasks:
+    - name: Copy connectiviity tester binary
+      copy:
+        src: ./connectivity-tester-linux-amd64
+        dest: /usr/bin/connectivity-tester-linux-amd64
+        owner: root
+        group: wheel
+        mode: 0755
+
+    - cron:
+        name: "Start Connectivity Tester"
+        special_time: reboot
+        job: "/usr/bin/connectivity-tester-linux-amd64"
+
+- name: Test what was installed
+  hosts: all
+  tasks:
+    - name: test nginx
+      shell: curl -v localhost
