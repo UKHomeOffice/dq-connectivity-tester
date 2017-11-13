@@ -2,3 +2,4 @@ connectivity-tester-linux-amd64
 connectivity-tester-windows-amd64.exe
 connectivity-tester-darwin-amd64
 playbook*.retry
+**/*.pyc

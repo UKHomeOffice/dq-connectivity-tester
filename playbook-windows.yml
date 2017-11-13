@@ -1,0 +1,25 @@
+---
+
+- name: Build
+  hosts: all
+  tasks:
+    - name: Copy connectiviity tester binary
+      win_copy:
+        src: connectivity-tester-windows-amd64.exe
+        dest: C:\connectivity-tester-windows-amd64.exe
+
+    - name: Add a script to start it up
+      win_copy:
+        content: foobar
+        dest: C:\connectivity-tester-windows-amd64-startup.ps1
+
+    - win_shell: |
+        $trigger = New-JobTrigger -AtStartup -RandomDelay 00:00:30
+        Register-ScheduledJob -Trigger $trigger -FilePath C:\connectivity-tester-windows-amd64-startup.ps1 -Name Connectivity-Tester
+
+#- name: Test
+#  hosts: all
+#  tasks:
+#    - name: Test
+#      win_uri:
+#        url: http://localhost

@@ -1,0 +1,50 @@
+{
+  "variables": {
+    "access_key": "{{env `AWS_ACCESS_KEY_ID`}}",
+    "secret_key": "{{env `AWS_SECRET_ACCESS_KEY`}}"
+  },
+  "builders": [
+    {
+      "type": "amazon-ebs",
+      "access_key": "{{user `access_key`}}",
+      "secret_key": "{{user `secret_key`}}",
+      "region": "eu-west-2",
+      "source_ami_filter": {
+        "filters": {
+          "virtualization-type": "hvm",
+          "name": "Windows_Server-2012-R2_RTM-English-64Bit-Base-*",
+          "root-device-type": "ebs"
+        },
+        "most_recent": true
+      },
+      "instance_type": "t2.micro",
+      "ssh_username": "ubuntu",
+      "communicator": "winrm",
+      "winrm_timeout": "4h",
+      "winrm_port": 5985,
+      "winrm_username": "Administrator",
+      "ami_name": "connectivity-tester-windows {{timestamp}}"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "powershell",
+      "inline": [
+        "mkdir C:\\tmp",
+        "Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/ansible/ansible/devel/examples/scripts/ConfigureRemotingForAnsible.ps1' -OutFile C:\\tmp\\tmp.ps1",
+        "powershell C:\\tmp\\tmp.ps1",
+        "rm C:\\tmp\\tmp.ps1"
+      ]
+    },
+    {
+      "type": "ansible",
+      "playbook_file": "./playbook-windows.yml",
+      "extra_arguments": [
+        "--connection",
+        "packer",
+        "--extra-vars",
+        "ansible_shell_type=powershell ansible_shell_executable=None"
+      ]
+    }
+  ]
+}
