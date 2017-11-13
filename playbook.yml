@@ -1,11 +1,12 @@
 ---
 
 - name: Pre-reqs for ansible to run
-  hosts: all
   gather_facts: false
   become: yes
+  hosts: all
   pre_tasks:
-    - raw: test -e /usr/bin/python || ( apt -y update && apt install -y python-minimal)
+    - name: Setup pre-reqs
+      raw: test -e /usr/bin/python || ( apt -y update && apt install -y python-minimal)
 
 - name: Build
   hosts: all
@@ -13,19 +14,37 @@
   tasks:
     - name: Copy connectiviity tester binary
       copy:
-        src: ./connectivity-tester-linux-amd64
+        src: connectivity-tester-linux-amd64
         dest: /usr/bin/connectivity-tester-linux-amd64
         owner: root
-        group: wheel
+        group: root
         mode: 0755
 
-    - cron:
-        name: "Start Connectivity Tester"
-        special_time: reboot
-        job: "/usr/bin/connectivity-tester-linux-amd64"
+    - name: Add a script to start it up
+      copy:
+        content: |
+          #!/bin/bash
+          env $(curl -s http://169.254.169.254/latest/user-data) /usr/bin/connectivity-tester-linux-amd64
+        dest: /usr/bin/connectivity-tester-linux-amd64-starter.sh
+        owner: root
+        group: root
+        mode: 0755
 
-- name: Test what was installed
-  hosts: all
-  tasks:
-    - name: test nginx
-      shell: curl -v localhost
+    - name: Make Cron Job to start it on boot
+      cron:
+        name: Start Connectivity Tester
+        special_time: reboot
+        job: /usr/bin/connectivity-tester-linux-amd64-starter.sh
+
+#- name: Test
+#  hosts: all
+#  tasks:
+#    - name: Start
+#      shell: LISTEN_http=0.0.0.0:80 CHECK_local=127.0.0.1:80 /usr/bin/connectivity-tester-linux-amd64
+#      async: 60
+#      poll: 0
+#    - name: Test
+#      shell: curl http://localhost
+#
+# uri:
+#        url: http://127.0.0

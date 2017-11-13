@@ -22,7 +22,11 @@
       },
       "instance_type": "t2.micro",
       "ssh_username": "ubuntu",
-      "ami_name": "connectivity-tester {{timestamp}}"
+      "ami_name": "connectivity-tester-linux {{isotime | clean_ami_name}}",
+      "ami_users": [
+        "663853996815",
+        "706916912083"
+      ]
     }
   ],
   "provisioners": [
