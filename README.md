@@ -10,10 +10,11 @@
 Simple app written in golang that can be used to test network connectivity, useful when mocking up an infrastructure
 
 We've packaged it in a few ways to make running it easy and quick to get going:
- - Native binary (Windows, Linux, MacOS)
- - Docker
- - Amazon AMIs
+ - [Native binary](https://github.com/UKHomeOffice/connectivity-tester/releases/latest) (Windows, Linux, MacOS)
+ - [Docker](https://quay.io/repository/ukhomeofficedigital/connectivity-tester/status)
+ - [Amazon AMIs](./packer.json)
  - Anything else you make a PR for (hint)
+ - [Terraform example](./example.tf)
 
 ## Usage
 It is configured with environment variables for example:
@@ -35,8 +36,7 @@ If you'd like to use our AMIs and you're in the UK Home Office then feel free to
 (Pull Requests welcome)
 - [ ] Windows AMI build - partial, work in [feature/packer-ansible-windows](/UKHomeOffice/connectivity-tester/tree/feature/packer-ansible-windows)
 - [ ] Example Kubernetes config
-- [ ] Example Docker Swarm config
-- [ ] Example Terraform config
+- [x] Example Terraform config
 - [x] Mac x64 binary
 - [x] Windows x64 binary
 - [x] Linux x64 binary
