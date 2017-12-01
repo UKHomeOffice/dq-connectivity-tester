@@ -1,10 +1,10 @@
 # Connectivity Tester
 
 [![Docker Repository on Quay](https://quay.io/repository/ukhomeofficedigital/connectivity-tester/status)](https://quay.io/repository/ukhomeofficedigital/connectivity-tester)
-[![GitHub issues](https://img.shields.io/github/issues/ukhomeofficedigital/connectivity-tester.svg)](https://github.com/ukhomeofficedigital/connectivity-tester/issues)
-[![GitHub forks](https://img.shields.io/github/forks/ukhomeofficedigital/connectivity-tester.svg)](https://github.com/ukhomeofficedigital/connectivity-tester/network)
-[![GitHub stars](https://img.shields.io/github/stars/ukhomeofficedigital/connectivity-tester.svg)](https://github.com/ukhomeofficedigital/connectivity-tester/stargazers)
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/ukhomeofficedigital/connectivity-tester/master/LICENSE)
+[![GitHub issues](https://img.shields.io/github/issues/ukhomeoffice/connectivity-tester.svg)](https://github.com/ukhomeoffice/connectivity-tester/issues)
+[![GitHub forks](https://img.shields.io/github/forks/ukhomeoffice/connectivity-tester.svg)](https://github.com/ukhomeoffice/connectivity-tester/network)
+[![GitHub stars](https://img.shields.io/github/stars/ukhomeoffice/connectivity-tester.svg)](https://github.com/ukhomeoffice/connectivity-tester/stargazers)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/ukhomeoffice/connectivity-tester/master/LICENSE)
 
 
 Simple app written in golang that can be used to test network connectivity, useful when mocking up an infrastructure
@@ -30,7 +30,7 @@ It serves http on any port you specify to listen on, which returns a simple text
 
 If you use one of the AMIs then you specify this in the [Instance User Data](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-metadata.html#instancedata-add-user-data)
 
-If you'd like to use our AMIs and you're in the UK Home Office then feel free to make a PR to the Packer adding your account id to `ami_users`.
+Also if you use the AMI and add a with `"Action": "cloudwatch:PutMetricData",` then you should see the results reported in AWS CloudWatch
 
 ### TO DO:
 (Pull Requests welcome)
