@@ -12,7 +12,12 @@
   hosts: all
   become: yes
   tasks:
-    - name: Copy connectiviity tester binary
+    - name: Install AWS CLI
+      apt:
+        name: awscli
+        state: present
+
+    - name: Copy connectivity tester binary
       copy:
         src: connectivity-tester-linux-amd64
         dest: /usr/bin/connectivity-tester-linux-amd64
@@ -35,6 +40,19 @@
         name: Start Connectivity Tester
         special_time: reboot
         job: /usr/bin/connectivity-tester-linux-amd64-starter.sh
+
+    - name: Copy cloudwatch healthchecker
+      copy:
+        src: reporthealth.sh
+        dest: /usr/bin/reporthealth.sh
+        owner: root
+        group: root
+        mode: 0755
+
+    - name: Cloudwatch metrics Cron Job
+      cron:
+        name: Cloudwatch metrics
+        job: /usr/bin/reporthealth.sh
 
 #- name: Test
 #  hosts: all
