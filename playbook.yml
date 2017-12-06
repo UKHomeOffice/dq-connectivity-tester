@@ -53,7 +53,6 @@
       cron:
         name: Cloudwatch metrics
         job: /usr/bin/reporthealth.sh
-        user: nobody
 
 #- name: Test
 #  hosts: all
