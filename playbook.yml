@@ -121,15 +121,17 @@
         special_time: reboot
         job: /usr/bin/startcloudwatchlogs.sh
 
-#- name: Test
-#  hosts: all
-#  tasks:
-#    - name: Start
-#      shell: LISTEN_http=0.0.0.0:80 CHECK_local=127.0.0.1:80 /usr/bin/connectivity-tester-linux-amd64
-#      async: 60
-#      poll: 0
-#    - name: Test
-#      shell: curl http://localhost
-#
-# uri:
-#        url: http://127.0.0
+- name: Test
+  hosts: all
+  tasks:
+    - name: Start
+      become: yes
+      shell: /usr/bin/connectivity-tester-linux-amd64
+      environment:
+        LISTEN_http: 0.0.0.0:80
+        CHECK_local: 127.0.0.1:80
+      async: 60
+      poll: 0
+    - name: Test
+      uri:
+        url: http://127.0.0.1:80
