@@ -1,6 +1,6 @@
 #!/bin/bash
 INSTANCE_ID=$(ec2metadata --instance-id)
-FAILURES=$(curl -s localhost:8080 | grep -c fail)
+FAILURES=$(curl -s localhost:8080 | grep -c false)
 SUCCESSES=$(curl -s localhost:8080 | grep -c true)
 CHECKS=$(curl -s localhost:8080 | grep -c "Connect to")
 REGION=$(ec2metadata --availability-zone | head -c-2)
