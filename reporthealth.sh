@@ -15,3 +15,6 @@ aws --region=${REGION} cloudwatch put-metric-data --dimensions ${DIMENSIONS} --m
 aws --region=${REGION} cloudwatch put-metric-data --dimensions ${DIMENSIONS} --metric-name ConnectivityTesterPass --namespace ConnectivityTester --value ${SUCCESSES}
 aws --region=${REGION} cloudwatch put-metric-data --dimensions ${DIMENSIONS} --metric-name ConnectivityTesterTest --namespace ConnectivityTester --value ${CHECKS}
 
+aws --region=${REGION} cloudwatch put-metric-data --metric-name ConnectivityTesterFail --namespace ConnectivityTester --value ${FAILURES}
+aws --region=${REGION} cloudwatch put-metric-data --metric-name ConnectivityTesterPass --namespace ConnectivityTester --value ${SUCCESSES}
+aws --region=${REGION} cloudwatch put-metric-data --metric-name ConnectivityTesterTest --namespace ConnectivityTester --value ${CHECKS}
