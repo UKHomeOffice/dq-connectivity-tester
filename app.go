@@ -32,7 +32,7 @@ func testASocketDial(addr string) bool {
 	dial, err := net.DialTimeout("tcp", addr, time.Second)
 	fmt.Println("Test", addr, err == nil)
 	if err == nil {
-		dial.Close()
+		defer dial.Close()
 	}
 	return err == nil
 }
@@ -54,4 +54,5 @@ func hello(w http.ResponseWriter, req *http.Request) {
 	}
 	w.WriteHeader(statusCode)
 	fmt.Fprintf(w, buffer)
+	defer req.Body.Close()
 }
