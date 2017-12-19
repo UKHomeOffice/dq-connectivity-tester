@@ -7,7 +7,6 @@ import (
 	"os"
 	"net"
 	"time"
-	"io"
 	"strconv"
 )
 
@@ -30,8 +29,11 @@ func getRangeOfThingsWithoutPrefix(env []string, prefix string) []string {
 }
 
 func testASocketDial(addr string) bool {
-	_, err := net.DialTimeout("tcp", addr, time.Second)
+	dial, err := net.DialTimeout("tcp", addr, time.Second)
 	fmt.Println("Test", addr, err == nil)
+	if err == nil {
+		dial.Close()
+	}
 	return err == nil
 }
 
@@ -51,5 +53,5 @@ func hello(w http.ResponseWriter, req *http.Request) {
 		buffer = buffer + "Connect to " + addr + " " + strconv.FormatBool(dialResponse) + "\n"
 	}
 	w.WriteHeader(statusCode)
-	io.WriteString(w, buffer)
+	fmt.Fprintf(w, buffer)
 }
