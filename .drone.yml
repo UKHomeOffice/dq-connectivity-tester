@@ -1,78 +1,78 @@
 pipeline:
-
-  test:
-    image: golang:1.9
-    commands:
-      - go get github.com/stretchr/testify
-      - go test -v
-
-  build:
-    image: golang:1.9
-    commands:
-      - GOOS=windows GOARCH=amd64 go build -a -ldflags '-extldflags "-static"' -o connectivity-tester-windows-amd64.exe
-      - GOOS=linux   GOARCH=amd64 go build -a -ldflags '-extldflags "-static"' -o connectivity-tester-linux-amd64
-      - GOOS=darwin  GOARCH=amd64 go build -a -ldflags '-extldflags "-static"' -o connectivity-tester-darwin-amd64
-
-  github_release:
-    image: plugins/github-release
-    api_key: ${GITHUB_TOKEN}
-    files:
-      - connectivity-tester-windows-amd64.exe
-      - connectivity-tester-linux-amd64
-      - connectivity-tester-darwin-amd64
-    checksum:
-      - md5
-      - sha1
-      - sha256
-      - sha512
-      - adler32
-      - crc32
-    when:
-      event: tag
-
-##### DOCKER
-
-  docker-build:
-    privileged: true
-    image: docker:1.12
-    environment:
-      - DOCKER_HOST=tcp://127.0.0.1:2375
-    commands:
-      - docker build -t quay.io/ukhomeofficedigital/connectivity-tester:${DRONE_COMMIT_SHA} .
-
-  image_to_quay:
-    image: docker:1.12
-    environment:
-      - DOCKER_HOST=tcp://127.0.0.1:2375
-    commands:
-      - docker login -u="ukhomeofficedigital+connectivity_tester" -p=${DOCKER_PASSWORD} quay.io
-      - docker push quay.io/ukhomeofficedigital/connectivity-tester:${DRONE_COMMIT_SHA}
-    when:
-      branch: master
-      event: push
-
-##### PACKER builds
-
-  linux-packer-validate:
-    image: chrisns/packer-ansible
-    commands:
-      - export HOME=/home/packer
-      - packer validate packer.json
-
-  linux-packer-inspect:
-    image: chrisns/packer-ansible
-    commands:
-      - export HOME=/home/packer
-      - packer inspect packer.json
-
-  linux-packer-build:
-    image: chrisns/packer-ansible
-    commands:
-      - export HOME=/home/packer
-      - packer build packer.json
-    when:
-      event: push
-      branch: master
+#
+#  test:
+#    image: golang:1.9
+#    commands:
+#      - go get github.com/stretchr/testify
+#      - go test -v
+#
+#  build:
+#    image: golang:1.9
+#    commands:
+#      - GOOS=windows GOARCH=amd64 go build -a -ldflags '-extldflags "-static"' -o connectivity-tester-windows-amd64.exe
+#      - GOOS=linux   GOARCH=amd64 go build -a -ldflags '-extldflags "-static"' -o connectivity-tester-linux-amd64
+#      - GOOS=darwin  GOARCH=amd64 go build -a -ldflags '-extldflags "-static"' -o connectivity-tester-darwin-amd64
+#
+#  github_release:
+#    image: plugins/github-release
+#    api_key: ${GITHUB_TOKEN}
+#    files:
+#      - connectivity-tester-windows-amd64.exe
+#      - connectivity-tester-linux-amd64
+#      - connectivity-tester-darwin-amd64
+#    checksum:
+#      - md5
+#      - sha1
+#      - sha256
+#      - sha512
+#      - adler32
+#      - crc32
+#    when:
+#      event: tag
+#
+###### DOCKER
+#
+#  docker-build:
+#    privileged: true
+#    image: docker:1.12
+#    environment:
+#      - DOCKER_HOST=tcp://127.0.0.1:2375
+#    commands:
+#      - docker build -t quay.io/ukhomeofficedigital/connectivity-tester:${DRONE_COMMIT_SHA} .
+#
+#  image_to_quay:
+#    image: docker:1.12
+#    environment:
+#      - DOCKER_HOST=tcp://127.0.0.1:2375
+#    commands:
+#      - docker login -u="ukhomeofficedigital+connectivity_tester" -p=${DOCKER_PASSWORD} quay.io
+#      - docker push quay.io/ukhomeofficedigital/connectivity-tester:${DRONE_COMMIT_SHA}
+#    when:
+#      branch: master
+#      event: push
+#
+###### PACKER builds
+#
+#  linux-packer-validate:
+#    image: chrisns/packer-ansible
+#    commands:
+#      - export HOME=/home/packer
+#      - packer validate packer.json
+#
+#  linux-packer-inspect:
+#    image: chrisns/packer-ansible
+#    commands:
+#      - export HOME=/home/packer
+#      - packer inspect packer.json
+#
+#  linux-packer-build:
+#    image: chrisns/packer-ansible
+#    commands:
+#      - export HOME=/home/packer
+#      - packer build packer.json
+#    when:
+#      event: push
+#      branch: master
 
 ##### PACKER copies
 
